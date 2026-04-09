@@ -34,28 +34,25 @@ class ModelValidationTests(unittest.TestCase):
 
     def test_modelarts_catalog_model_is_validator_approved(self):
         self.assertTrue(validate_model("modelarts", "deepseek-v3.1-terminus"))
+        self.assertFalse(validate_model("modelarts", "not-a-real-modelarts-model"))
 
-    def test_unknown_model_emits_warning_for_strict_provider(self):
-        client = DummyLLMClient("openai", "not-a-real-openai-model")
+    def test_unknown_model_emits_warning_for_strict_providers(self):
+        cases = (
+            ("openai", "not-a-real-openai-model"),
+            ("modelarts", "not-a-real-modelarts-model"),
+        )
 
-        with warnings.catch_warnings(record=True) as caught:
-            warnings.simplefilter("always")
-            client.get_llm()
+        for provider, model in cases:
+            with self.subTest(provider=provider, model=model):
+                client = DummyLLMClient(provider, model)
 
-        self.assertEqual(len(caught), 1)
-        self.assertIn("not-a-real-openai-model", str(caught[0].message))
-        self.assertIn("openai", str(caught[0].message))
+                with warnings.catch_warnings(record=True) as caught:
+                    warnings.simplefilter("always")
+                    client.get_llm()
 
-    def test_unknown_model_emits_warning_for_modelarts_provider(self):
-        client = DummyLLMClient("modelarts", "not-a-real-modelarts-model")
-
-        with warnings.catch_warnings(record=True) as caught:
-            warnings.simplefilter("always")
-            client.get_llm()
-
-        self.assertEqual(len(caught), 1)
-        self.assertIn("not-a-real-modelarts-model", str(caught[0].message))
-        self.assertIn("modelarts", str(caught[0].message))
+                self.assertEqual(len(caught), 1)
+                self.assertIn(model, str(caught[0].message))
+                self.assertIn(provider, str(caught[0].message))
 
     def test_openrouter_and_ollama_accept_custom_models_without_warning(self):
         for provider in ("openrouter", "ollama"):
