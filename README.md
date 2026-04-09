@@ -180,7 +180,7 @@ An interface will appear showing results as they load, letting you track the age
 
 ### Implementation Details
 
-We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Moonshot (Kimi), Google, Anthropic, xAI, OpenRouter, and Ollama.
+We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Moonshot (Kimi), ModelArts (DeepSeek), Google, Anthropic, xAI, OpenRouter, and Ollama.
 
 ### Python Usage
 
