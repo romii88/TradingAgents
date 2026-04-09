@@ -66,6 +66,23 @@ class ModelValidationTests(unittest.TestCase):
         self.assertIsInstance(client, OpenAIClient)
         self.assertEqual(client.provider, "modelarts")
 
+        with patch.dict("os.environ", {"MODELARTS_API_KEY": "dummy"}, clear=False):
+            with patch(
+                "tradingagents.llm_clients.openai_client.NormalizedChatOpenAI"
+            ) as mock_chat_openai:
+                client.get_llm()
+
+        mock_chat_openai.assert_called_once()
+        self.assertEqual(
+            mock_chat_openai.call_args.kwargs["base_url"],
+            "https://api.modelarts-maas.com/openai/v1",
+        )
+        self.assertEqual(mock_chat_openai.call_args.kwargs["api_key"], "dummy")
+        self.assertEqual(
+            mock_chat_openai.call_args.kwargs["model"],
+            "deepseek-v3.1-terminus",
+        )
+
     def test_moonshot_client_disables_thinking_by_default(self):
         with patch.dict("os.environ", {"MOONSHOT_API_KEY": "dummy"}, clear=False):
             llm = create_llm_client("moonshot", "kimi-k2.5").get_llm()
