@@ -60,6 +60,12 @@ class ModelValidationTests(unittest.TestCase):
         self.assertIsInstance(client, OpenAIClient)
         self.assertEqual(client.provider, "moonshot")
 
+    def test_create_llm_client_supports_modelarts_provider(self):
+        client = create_llm_client("modelarts", "deepseek-v3.1-terminus")
+
+        self.assertIsInstance(client, OpenAIClient)
+        self.assertEqual(client.provider, "modelarts")
+
     def test_moonshot_client_disables_thinking_by_default(self):
         with patch.dict("os.environ", {"MOONSHOT_API_KEY": "dummy"}, clear=False):
             llm = create_llm_client("moonshot", "kimi-k2.5").get_llm()

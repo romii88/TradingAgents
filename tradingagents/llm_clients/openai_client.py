@@ -30,6 +30,7 @@ _PROVIDER_CONFIG = {
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY"),
     "ollama": ("http://localhost:11434/v1", None),
     "moonshot": ("https://api.moonshot.cn/v1", "MOONSHOT_API_KEY"),
+    "modelarts": ("https://api.modelarts-maas.com/openai/v1", "MODELARTS_API_KEY"),
 }
 
 
