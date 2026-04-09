@@ -63,6 +63,14 @@ MODEL_OPTIONS: ProviderModeOptions = {
             ("Grok 4.1 Fast (Non-Reasoning) - Speed optimized, 2M ctx", "grok-4-1-fast-non-reasoning"),
         ],
     },
+    "moonshot": {
+        "quick": [
+            ("Kimi K2.5 - Recommended first-release Moonshot model", "kimi-k2.5"),
+        ],
+        "deep": [
+            ("Kimi K2.5 - Recommended first-release Moonshot model", "kimi-k2.5"),
+        ],
+    },
     # OpenRouter models are fetched dynamically at CLI runtime.
     # No static entries needed; any model ID is accepted by the validator.
     "ollama": {

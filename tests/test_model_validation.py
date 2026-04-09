@@ -1,8 +1,11 @@
 import unittest
 import warnings
+from unittest.mock import patch
 
 from tradingagents.llm_clients.base_client import BaseLLMClient
+from tradingagents.llm_clients.factory import create_llm_client
 from tradingagents.llm_clients.model_catalog import get_known_models
+from tradingagents.llm_clients.openai_client import OpenAIClient
 from tradingagents.llm_clients.validators import validate_model
 
 
@@ -50,3 +53,15 @@ class ModelValidationTests(unittest.TestCase):
                     client.get_llm()
 
                 self.assertEqual(caught, [])
+
+    def test_create_llm_client_supports_moonshot_provider(self):
+        client = create_llm_client("moonshot", "kimi-k2.5")
+
+        self.assertIsInstance(client, OpenAIClient)
+        self.assertEqual(client.provider, "moonshot")
+
+    def test_moonshot_client_disables_thinking_by_default(self):
+        with patch.dict("os.environ", {"MOONSHOT_API_KEY": "dummy"}, clear=False):
+            llm = create_llm_client("moonshot", "kimi-k2.5").get_llm()
+
+        self.assertEqual(llm.extra_body, {"thinking": {"type": "disabled"}})

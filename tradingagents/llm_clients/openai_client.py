@@ -21,7 +21,7 @@ class NormalizedChatOpenAI(ChatOpenAI):
 # Kwargs forwarded from user config to ChatOpenAI
 _PASSTHROUGH_KWARGS = (
     "timeout", "max_retries", "reasoning_effort",
-    "api_key", "callbacks", "http_client", "http_async_client",
+    "api_key", "callbacks", "http_client", "http_async_client", "extra_body",
 )
 
 # Provider base URLs and API key env vars
@@ -29,16 +29,17 @@ _PROVIDER_CONFIG = {
     "xai": ("https://api.x.ai/v1", "XAI_API_KEY"),
     "openrouter": ("https://openrouter.ai/api/v1", "OPENROUTER_API_KEY"),
     "ollama": ("http://localhost:11434/v1", None),
+    "moonshot": ("https://api.moonshot.cn/v1", "MOONSHOT_API_KEY"),
 }
 
 
 class OpenAIClient(BaseLLMClient):
-    """Client for OpenAI, Ollama, OpenRouter, and xAI providers.
+    """Client for OpenAI and OpenAI-compatible providers.
 
     For native OpenAI models, uses the Responses API (/v1/responses) which
     supports reasoning_effort with function tools across all model families
     (GPT-4.1, GPT-5). Third-party compatible providers (xAI, OpenRouter,
-    Ollama) use standard Chat Completions.
+    Ollama, Moonshot) use standard Chat Completions.
     """
 
     def __init__(
@@ -73,6 +74,11 @@ class OpenAIClient(BaseLLMClient):
         for key in _PASSTHROUGH_KWARGS:
             if key in self.kwargs:
                 llm_kwargs[key] = self.kwargs[key]
+
+        # Moonshot Kimi tool-calling currently requires disabling thinking
+        # unless reasoning_content is preserved across assistant tool turns.
+        if self.provider == "moonshot" and "extra_body" not in llm_kwargs:
+            llm_kwargs["extra_body"] = {"thinking": {"type": "disabled"}}
 
         # Native OpenAI: use Responses API for consistent behavior across
         # all model families. Third-party providers use Chat Completions.

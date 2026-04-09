@@ -137,6 +137,7 @@ TradingAgents supports multiple LLM providers. Set the API key for your chosen p
 
 ```bash
 export OPENAI_API_KEY=...          # OpenAI (GPT)
+export MOONSHOT_API_KEY=...        # Moonshot (Kimi)
 export GOOGLE_API_KEY=...          # Google (Gemini)
 export ANTHROPIC_API_KEY=...       # Anthropic (Claude)
 export XAI_API_KEY=...             # xAI (Grok)
@@ -178,7 +179,7 @@ An interface will appear showing results as they load, letting you track the age
 
 ### Implementation Details
 
-We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Google, Anthropic, xAI, OpenRouter, and Ollama.
+We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Moonshot (Kimi), Google, Anthropic, xAI, OpenRouter, and Ollama.
 
 ### Python Usage
 
@@ -202,7 +203,7 @@ from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
 config = DEFAULT_CONFIG.copy()
-config["llm_provider"] = "openai"        # openai, google, anthropic, xai, openrouter, ollama
+config["llm_provider"] = "openai"        # openai, moonshot, google, anthropic, xai, openrouter, ollama
 config["deep_think_llm"] = "gpt-5.4"     # Model for complex reasoning
 config["quick_think_llm"] = "gpt-5.4-mini" # Model for quick tasks
 config["max_debate_rounds"] = 2
@@ -210,6 +211,15 @@ config["max_debate_rounds"] = 2
 ta = TradingAgentsGraph(debug=True, config=config)
 _, decision = ta.propagate("NVDA", "2026-01-15")
 print(decision)
+```
+
+For Moonshot Kimi, use the official API and set both model slots to `kimi-k2.5` in the first release:
+
+```python
+config = DEFAULT_CONFIG.copy()
+config["llm_provider"] = "moonshot"
+config["deep_think_llm"] = "kimi-k2.5"
+config["quick_think_llm"] = "kimi-k2.5"
 ```
 
 See `tradingagents/default_config.py` for all configuration options.

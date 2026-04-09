@@ -235,20 +235,21 @@ def select_deep_thinking_agent(provider) -> str:
 
 def select_llm_provider() -> tuple[str, str | None]:
     """Select the LLM provider and its API endpoint."""
-    BASE_URLS = [
-        ("OpenAI", "https://api.openai.com/v1"),
-        ("Google", None),  # google-genai SDK manages its own endpoint
-        ("Anthropic", "https://api.anthropic.com/"),
-        ("xAI", "https://api.x.ai/v1"),
-        ("Openrouter", "https://openrouter.ai/api/v1"),
-        ("Ollama", "http://localhost:11434/v1"),
+    providers = [
+        ("OpenAI", "openai", "https://api.openai.com/v1"),
+        ("Google", "google", None),  # google-genai SDK manages its own endpoint
+        ("Anthropic", "anthropic", "https://api.anthropic.com/"),
+        ("xAI", "xai", "https://api.x.ai/v1"),
+        ("Moonshot / Kimi", "moonshot", "https://api.moonshot.cn/v1"),
+        ("Openrouter", "openrouter", "https://openrouter.ai/api/v1"),
+        ("Ollama", "ollama", "http://localhost:11434/v1"),
     ]
     
     choice = questionary.select(
         "Select your LLM Provider:",
         choices=[
-            questionary.Choice(display, value=(display, value))
-            for display, value in BASE_URLS
+            questionary.Choice(display, value=(provider, display, url))
+            for display, provider, url in providers
         ],
         instruction="\n- Use arrow keys to navigate\n- Press Enter to select",
         style=questionary.Style(
@@ -264,10 +265,10 @@ def select_llm_provider() -> tuple[str, str | None]:
         console.print("\n[red]no OpenAI backend selected. Exiting...[/red]")
         exit(1)
     
-    display_name, url = choice
+    provider_name, display_name, url = choice
     print(f"You selected: {display_name}\tURL: {url}")
 
-    return display_name, url
+    return provider_name, url
 
 
 def ask_openai_reasoning_effort() -> str:
