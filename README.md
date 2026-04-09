@@ -142,6 +142,7 @@ export GOOGLE_API_KEY=...          # Google (Gemini)
 export ANTHROPIC_API_KEY=...       # Anthropic (Claude)
 export XAI_API_KEY=...             # xAI (Grok)
 export OPENROUTER_API_KEY=...      # OpenRouter
+export MODELARTS_API_KEY=...       # Huawei Cloud / DeepSeek
 export ALPHA_VANTAGE_API_KEY=...   # Alpha Vantage
 ```
 
@@ -203,7 +204,7 @@ from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
 config = DEFAULT_CONFIG.copy()
-config["llm_provider"] = "openai"        # openai, moonshot, google, anthropic, xai, openrouter, ollama
+config["llm_provider"] = "openai"        # openai, moonshot, modelarts, google, anthropic, xai, openrouter, ollama
 config["deep_think_llm"] = "gpt-5.4"     # Model for complex reasoning
 config["quick_think_llm"] = "gpt-5.4-mini" # Model for quick tasks
 config["max_debate_rounds"] = 2
@@ -220,6 +221,15 @@ config = DEFAULT_CONFIG.copy()
 config["llm_provider"] = "moonshot"
 config["deep_think_llm"] = "kimi-k2.5"
 config["quick_think_llm"] = "kimi-k2.5"
+```
+
+For Huawei Cloud ModelArts, use the DeepSeek endpoint and model names:
+
+```python
+config = DEFAULT_CONFIG.copy()
+config["llm_provider"] = "modelarts"
+config["deep_think_llm"] = "deepseek-v3.1-terminus"
+config["quick_think_llm"] = "deepseek-v3.1-terminus"
 ```
 
 See `tradingagents/default_config.py` for all configuration options.
