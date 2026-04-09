@@ -241,6 +241,11 @@ def select_llm_provider() -> tuple[str, str | None]:
         ("Anthropic", "anthropic", "https://api.anthropic.com/"),
         ("xAI", "xai", "https://api.x.ai/v1"),
         ("Moonshot / Kimi", "moonshot", "https://api.moonshot.cn/v1"),
+        (
+            "Huawei Cloud / DeepSeek",
+            "modelarts",
+            "https://api.modelarts-maas.com/openai/v1",
+        ),
         ("Openrouter", "openrouter", "https://openrouter.ai/api/v1"),
         ("Ollama", "ollama", "http://localhost:11434/v1"),
     ]

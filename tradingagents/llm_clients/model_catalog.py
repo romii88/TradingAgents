@@ -71,6 +71,20 @@ MODEL_OPTIONS: ProviderModeOptions = {
             ("Kimi K2.5 - Recommended first-release Moonshot model", "kimi-k2.5"),
         ],
     },
+    "modelarts": {
+        "quick": [
+            (
+                "DeepSeek V3.1 Terminus - Huawei Cloud fixed deployment",
+                "deepseek-v3.1-terminus",
+            ),
+        ],
+        "deep": [
+            (
+                "DeepSeek V3.1 Terminus - Huawei Cloud fixed deployment",
+                "deepseek-v3.1-terminus",
+            ),
+        ],
+    },
     # OpenRouter models are fetched dynamically at CLI runtime.
     # No static entries needed; any model ID is accepted by the validator.
     "ollama": {
