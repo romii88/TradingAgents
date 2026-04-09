@@ -18,8 +18,11 @@ while IFS= read -r line; do
     +*MOONSHOT_API_KEY=*|+*OPENAI_API_KEY=*|+*GOOGLE_API_KEY=*|+*ANTHROPIC_API_KEY=*|+*XAI_API_KEY=*|+*OPENROUTER_API_KEY=*)
       value=${line#*=}
       trimmed=$(printf '%s' "$value" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')
+      if [ -z "$trimmed" ] || [ "$trimmed" = "..." ] || [ "$trimmed" = '"..."' ] || [ "$trimmed" = "'...'" ]; then
+        continue
+      fi
       case "$trimmed" in
-        ""|"..."|'"..."'|"'"'...'"'"'"|*'${'*|*'YOUR_'*|*'your_'*|*'<'*)
+        *'${'*|*YOUR_*|*your_*|*\<*)
           ;;
         *)
           echo "Blocked commit: staged changes contain API key assignment lines."
