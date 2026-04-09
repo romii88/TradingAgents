@@ -32,6 +32,9 @@ class ModelValidationTests(unittest.TestCase):
                 with self.subTest(provider=provider, model=model):
                     self.assertTrue(validate_model(provider, model))
 
+    def test_modelarts_catalog_model_is_validator_approved(self):
+        self.assertTrue(validate_model("modelarts", "deepseek-v3.1-terminus"))
+
     def test_unknown_model_emits_warning_for_strict_provider(self):
         client = DummyLLMClient("openai", "not-a-real-openai-model")
 
@@ -42,6 +45,17 @@ class ModelValidationTests(unittest.TestCase):
         self.assertEqual(len(caught), 1)
         self.assertIn("not-a-real-openai-model", str(caught[0].message))
         self.assertIn("openai", str(caught[0].message))
+
+    def test_unknown_model_emits_warning_for_modelarts_provider(self):
+        client = DummyLLMClient("modelarts", "not-a-real-modelarts-model")
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            client.get_llm()
+
+        self.assertEqual(len(caught), 1)
+        self.assertIn("not-a-real-modelarts-model", str(caught[0].message))
+        self.assertIn("modelarts", str(caught[0].message))
 
     def test_openrouter_and_ollama_accept_custom_models_without_warning(self):
         for provider in ("openrouter", "ollama"):
