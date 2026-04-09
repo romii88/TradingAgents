@@ -180,7 +180,7 @@ An interface will appear showing results as they load, letting you track the age
 
 ### Implementation Details
 
-We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Moonshot (Kimi), ModelArts (DeepSeek), Google, Anthropic, xAI, OpenRouter, and Ollama.
+We built TradingAgents with LangGraph to ensure flexibility and modularity. The framework supports multiple LLM providers: OpenAI, Moonshot (Kimi), Huawei Cloud / DeepSeek (ModelArts), Google, Anthropic, xAI, OpenRouter, and Ollama.
 
 ### Python Usage
 
@@ -223,7 +223,7 @@ config["deep_think_llm"] = "kimi-k2.5"
 config["quick_think_llm"] = "kimi-k2.5"
 ```
 
-For Huawei Cloud ModelArts, use the DeepSeek endpoint and model names:
+For Huawei Cloud / DeepSeek on ModelArts, use the fixed endpoint and fixed first-release model:
 
 ```python
 config = DEFAULT_CONFIG.copy()
